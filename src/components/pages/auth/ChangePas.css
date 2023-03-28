@@ -1,0 +1,50 @@
+.parent-div{
+    margin-top: 100px;
+    margin-left: 100px;
+    
+  
+
+}
+form{
+    
+}
+
+  
+  input {
+    display: grid;
+    width: 30%;
+    margin-top: 10px !important; 
+    height: calc(2.75rem + 2px);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .input-div input:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    outline: none;
+  
+  }
+
+  #btn-primary{
+    
+    margin-top: 15px;
+    background-color:#2477cd !important;
+    border-radius: 5px !important ;
+    cursor: pointer;
+  }
+
+  button:focus {
+    border-color: #80bdff;
+   
+    outline: none;
+    
+  }

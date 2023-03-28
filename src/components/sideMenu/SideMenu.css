@@ -1,0 +1,210 @@
+/* edited */
+aside.mainSidebar {
+    position: fixed;
+    left: 0;
+    top: 10%;
+    height: 100%;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: normal;
+    width: 4.5em;
+    text-align: center;
+    padding-top: 2%;
+    /* bottom: 0;*/
+    background-color: white; 
+    z-index: 1;
+    border-bottom-right-radius: 20px;
+    box-shadow: 3px 0px 15px 0px rgba(0,0,0, .1); 
+    /* overflow: visible; */
+    bottom: auto;  
+    margin-left: -0.5em;
+}
+
+aside.mainSidebar .avtarLogo{
+    display: none;
+}
+
+aside.mainSidebar .textAriaUser p{
+    display: none;
+}
+
+aside.mainSidebar.compactView .avtarLogo{
+    display: block;
+    /* width: 200px; */
+    padding-left: 96px;
+    padding-top: 100px;
+    margin: 5px;
+    right: 60px;
+    border: 2px black;
+    /* background: skyblue; */
+   
+}
+aside.mainSidebar.compactView .textAriaUser p{
+    display: block;
+    font-weight: 600;
+    font-size: small;
+    padding-left: 36px;
+    padding-top: 11px;
+    margin-bottom: 30px;
+    /* background-color: skyblue; */
+}
+
+
+aside.mainSidebar .accordion .accordion-item,
+aside.mainSidebar .accordion .accordion-item .accordion-header,
+aside.mainSidebar .accordion .accordion-item .accordion-header button {
+    border-radius: 0;
+    border: 0;
+    
+    /* background: #555; */
+    
+}
+
+aside.mainSidebar .accordion .accordion-item .accordion-header button,
+aside.mainSidebar #mainMenu .list-group-item {
+    background: transparent;
+    color: var(--grayscale-900);
+    border-top: 0;
+    text-decoration: none !important;
+    padding: auto;
+    transition: .20s ease-in-out;
+    width: 100%;
+    display: block;
+    position: relative;
+    top:8%;
+    line-height: 4em;
+    padding-left: 12%;
+    /* height: 9vh; */
+}
+
+aside.mainSidebar #mainMenu .list-group-item span{
+    display: none;
+}
+
+
+
+aside.mainSidebar.compactView #mainMenu .list-group-item:focus span,
+aside.mainSidebar.compactView #mainMenu .list-group-item:hover span,
+aside.mainSidebar.compactView #mainMenu .list-group-item.active span
+{
+    color: var(--primary-color) !important;
+    transition: 0.7s ease-in-out; }
+
+ aside.mainSidebar #mainMenu .list-group-item:focus,
+aside.mainSidebar #mainMenu .list-group-item:hover,
+aside.mainSidebar #mainMenu .list-group-item.active{
+    background-color: var(--background-color);
+    border-right: 5px solid var(--primary-color);
+    color: var(--primary-color);
+    transition: 0.7s ease-in-out;
+}
+
+/* #mainMenu .subMenu .list-group-item:hover,
+#mainMenu .subMenu .list-group-item:focus,
+#mainMenu .subMenu .list-group-item.active{
+    background: #333 !important;
+} */
+
+aside.mainSidebar .accordion .accordion-item .accordion-header button svg,
+aside.mainSidebar #mainMenu .list-group-item svg{
+    width: auto;
+    text-align: center;
+    display: inline-block;
+}
+
+/* edited */
+
+aside.mainSidebar.compactView {
+    position: fixed;
+    left: 0;
+    top: 10%;
+    /* height: 100vh; */
+    width: 16%;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 1;
+    text-align: left;
+    padding-top: 2%;
+    background-color: white;
+    vertical-align: middle;
+
+    /* border-radius: 10px; */
+    /* box-shadow: 3px 0px 5px 0px rgba(0,0,0, .2); */
+
+    /* transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    box-shadow: 0px 8px 10px -5px rgb(145 158 171 / 20%), 0px 16px 24px 2px rgb(145 158 171 / 14%), 0px 6px 30px 5px rgb(145 158 171 / 12%); */
+}
+
+/* edited */
+aside.mainSidebar.compactView #mainMenu .list-group-item {
+    display: block;
+    
+}
+
+
+aside.mainSidebar.compactView #mainMenu .accordion .accordion-item .accordion-header button span,
+aside.mainSidebar.compactView #mainMenu .list-group-item span {
+    /* display: none; */
+    display: block;
+    position: absolute;
+    left: 8%;
+    width: 92.5%;
+    top: 0;
+    bottom: 0;
+    padding: 0 0 0 19%;
+    border: 0;
+    font-weight: 800;
+    font-size: 0.8em;
+}
+
+/* aside.mainSidebar.compactView #mainMenu .accordion .accordion-item .accordion-header button{
+  overflow: hidden;
+}
+
+aside.mainSidebar.compactView #mainMenu .accordion .accordion-item .accordion-header button:hover{
+  overflow: visible;
+}
+
+aside.mainSidebar.compactView #mainMenu .accordion .accordion-item .accordion-header button:hover span,
+aside.mainSidebar.compactView #mainMenu .list-group-item:hover span {
+    display: block;
+}
+
+aside.mainSidebar .accordion .accordion-item .accordion-header button::after {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 224px;
+    background-color: #ffffff !important;
+    border-radius: 10px;
+} */
+
+aside .accordion-body{
+    padding: 0;
+}
+
+.side-bar{
+    background: var(--primary-color) !important;
+    color: white !important;
+    position: relative !important;
+    top: 0;
+    left: 50% !important;
+    transition: 0.7 ease-in-out;
+    padding: 3%;
+}
+aside.mainSidebar.compactView .side-bar {
+    position: relative !important;
+    top: 0;
+    left: 92% !important;
+    transition: 0.7 ease-in-out;
+    padding: 3%;
+}
+/* .css-i4bv87-MuiSvgIcon-root{
+    font-size: 0.8em !important;
+} */
+
+/*.css-1e0d89p-MuiButtonBase-root-MuiIconButton-root {
+    position: relative !important;
+    top: 50% !important;
+    left: 90% !important;   
+}*/
