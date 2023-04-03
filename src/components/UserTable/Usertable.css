@@ -6,3 +6,10 @@
    height: 30% !important;
 
 }
+
+.modal-dialog{
+    margin-top: 100px;
+}
+.form-group-2{
+    margin-left: 10px;
+}

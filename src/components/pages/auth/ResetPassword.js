@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ChangePas.css'
+import axios from 'axios';
 const ResetPassword = () => {
   const navigate = useNavigate()
   const [error, setError] = useState({
@@ -9,28 +10,37 @@ const ResetPassword = () => {
     msg: "",
     type: ""
   })
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const actualData = {
-      password: data.get('password'),
-      password_confirmation: data.get('password_confirmation'),
+      email: data.get('email'),
     }
-    if (actualData.password && actualData.password_confirmation) {
-      if (actualData.password === actualData.password_confirmation) {
-        console.log(actualData);
-        document.getElementById('password-reset-form').reset()
-        setError({ status: true, msg: "Password Reset Successfully. Redirecting to Login Page...", type: 'success' })
-        setTimeout(() => {
-          navigate("/login")
-        }, 3000)
-      } else {
-        setError({ status: true, msg: "Password and Confirm Password Doesn't Match", type: 'error' })
-      }
-    } else {
-      setError({ status: true, msg: "All Fields are Required", type: 'error' })
+    if (actualData.email) {
+      console.log(actualData.email);
+      try {
+        let finalData = {"email" : actualData.email}
+        console.log(JSON.stringify(actualData)); 
+        const response = await axios.post(`http://localhost:4000/accounts/forgot-password`,
+          finalData
+        ).then((response)=>{
+          if (response.status === 'success') {
+            console.log(response.message);
+            document.getElementById('password-reset-email-form').reset();
+            setError({ status: true, msg: "Password Reset Email Sent. Check Your Email !!", type: 'success' });
+          } else {
+            setError({ status: true, msg: response.message, type: 'error' });
+          }
+
+        })  
+    }catch (error) {
+      setError({ status: true, msg: error.message, type: 'error' });
+    }
+   } else {
+      setError({ status: true, msg: "Please Provide Valid Email", type: 'error' })
     }
   }
+  
   return <>
     {/* <Grid container justifyContent='center'>
       <Grid item sm={6} xs={12}>
@@ -45,6 +55,10 @@ const ResetPassword = () => {
         </Box>
       </Grid>
     </Grid> */}
+{/*     
+    setTimeout(() => {
+          navigate("/login")
+        }, 3000) */}
 
 <div className="parent-div">
       <h1>Change Password</h1>

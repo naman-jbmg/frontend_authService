@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default function UseAuth() {
 
-const [users,setUsers]=useState([]);
+const [usersAll,setUsers]=useState([]);
 const token = localStorage.getItem("jwtToken");
 
   useEffect(()=>{
@@ -21,5 +21,5 @@ const token = localStorage.getItem("jwtToken");
   fetchUsers();
  },[]);
   
- return [users];
+ return [usersAll];
 };

@@ -1,4 +1,5 @@
 import { Box, TextField, Button, Alert } from '@mui/material';
+import axios from 'axios';
 import { useState } from 'react';
 
 const ChangePassword = () => {
@@ -7,7 +8,7 @@ const ChangePassword = () => {
     msg: "",
     type: ""
   });
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const actualData = {
@@ -15,14 +16,30 @@ const ChangePassword = () => {
       password_confirmation: data.get('password_confirmation'),
     }
     if (actualData.password && actualData.password_confirmation) {
-      if (actualData.password === actualData.password_confirmation) {
-        console.log(actualData);
-        document.getElementById("password-change-form").reset();
-        setError({ status: true, msg: "Password Changed Successful", type: "success" });
-      } else {
-        setError({ status: true, msg: "Password and Confirm Password Doesn't Match", type: "error" })
+      try {
+        const response = await
+          axios.post
+            (`http://localhost:4000/accounts/reset-password`
+              , actualData
+            ).then(() => {
+              if (actualData.password === actualData.password_confirmation) {
+                console.log(actualData);
+                document.getElementById("password-change-form").reset();
+                setError({ status: true, msg: "Password Changed Successful", type: "success" });
+              } else {
+                setError({ status: true, msg: "Password and Confirm Password Doesn't Match", type: "error" })
+              }
+
+            })
+
       }
-    } else {
+      catch (error) {
+        console.log(error);
+      }
+
+    }
+
+    else {
       setError({ status: true, msg: "All Fields are Required", type: "error" })
     }
   };
@@ -38,7 +55,7 @@ const ChangePassword = () => {
         {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ""}
       </Box>
     </Box>
-    
+
   </>;
 };
 

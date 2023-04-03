@@ -222,7 +222,7 @@ const Registration = () => {
             >
               Join
             </Button>
-            <ToastContainer />
+          
             {/* {response && <div>{JSON.stringify(response)}</div>} */}
           </Box>
           {/* {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ""} */}

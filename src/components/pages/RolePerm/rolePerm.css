@@ -1,0 +1,16 @@
+.tab-change{
+  margin-left: 45%;
+
+}
+.tab-panel{
+    position: fixed;
+    margin-left: 350px;
+    margin-top: 5px;
+    width: 50%;
+}
+.table-responsive{
+  
+    padding: 10px;
+    text-align: center;
+   
+}

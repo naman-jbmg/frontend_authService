@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
 import useAuth from "../hooks/UseAuth";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
@@ -41,21 +41,27 @@ const UserLogin = () => {
       const response = await axios.post(
         `http://localhost:4000/accounts/authenticate`,
         { email: loginData.email, password: loginData.password }
-      ) 
+      ).then((response)=>{
+        console.log("login succsess", response?.data);
+        console.log(response.data.id);
+        // const email = response?.data?.email;
+        // const password = response?.data?.password;
+        const accessToken = response?.data?.jwtToken;
+        localStorage.setItem('jwtToken', accessToken);
+        setUserRole(response.data.role);
+        // const roles = response?.data?.role;
+        localStorage.setItem("CurrentUser", JSON.stringify(response?.data));
+        localStorage.setItem("CurrentUserRole", JSON.stringify(response?.data?.role));
+        // toast.success("login Successfull");
+        
+        navigate('/dashboard',{
+          state:{
+            name:response.data.firstName
+          }
+        });
+      })
 
-      console.log("login succsess", response?.data);
-      console.log(response.data.id);
-      // const email = response?.data?.email;
-      // const password = response?.data?.password;
-      const accessToken = response?.data?.jwtToken;
-      localStorage.setItem('jwtToken', accessToken);
-      setUserRole(response.data.role);
-      // const roles = response?.data?.role;
-      localStorage.setItem("CurrentUser", JSON.stringify(response?.data));
-      localStorage.setItem("CurrentUserRole", JSON.stringify(response?.data?.role));
-      toast.success("login success")
       
-      navigate('/dashboard');
     } catch (err) {
       if (!err?.response) {
         console.log(err);
@@ -64,7 +70,7 @@ const UserLogin = () => {
       } else if (err.response?.status === 400) {
         setError(err.response?.data.message);
         toast.error(error)
-        //setErrMsg('Missing Username or Password');
+        
       } else if (err.response?.status === 401) {
         setError("Unauthorized");
         toast.error(error)

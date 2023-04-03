@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ChangePassword from "./auth/ChangePassword";
 import "./dash.css";
 import SideMenu from "../sideMenu/SideMenu";
@@ -8,10 +8,18 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import Layout from "./Layout";
 import UseAuth from "./auth/hooks/UseAuth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+
+
+console.log("ASDASDA")
 const Dashboard = () => {
+  const {state}= useLocation();
   const navigate = useNavigate();
-  const [users]=UseAuth();
+  const [usersAll]=UseAuth();
+  let names= state?.name;
+  console.log(names)
   const userRole=localStorage.getItem("CurrentUserRole");
   
   console.log("gdfdsfasd",userRole);
@@ -20,14 +28,19 @@ const Dashboard = () => {
 
     navigate("/login");
   };
+  toast.success("login Successfull," + " " + names+"!")
 
   return (
     <>
+   
+    
       <Layout />
-      {/* <SideMenu /> */}
-     {/* <UserTable2/> */}
       
-  {userRole==='Admin' ? <SideMenu/> :<UserTable2/> }
+      
+      {/* <SideMenu /> */}
+     <UserTable2/>
+      
+  {/* {userRole==='Admin' ? <SideMenu/> :<UserTable2/> } */}
 {/* <Route path="/dashboard" element={jwtToken= "123" ? <Dashboard /> : <change/>} /> */}
       <Grid container sx={{ marginTop: 7, marginLeft: 11 }}>
         <Grid
@@ -52,6 +65,8 @@ const Dashboard = () => {
           <ChangePassword />
         </Grid>
       </Grid>
+      <ToastContainer/>
+      {console.log("asdas")}
     </>
   );
 };

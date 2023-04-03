@@ -8,7 +8,7 @@ const Navbar = (props) => {
           <Typography variant='h5' component="div" sx={{ flexGrow: 1}}>
             <Button style={{backgroundColor:'aqua',borderRadius:32}}>Admin Panel</Button>
           </Typography>
-          <h1>{props.valu}nm,</h1>
+
           <Button component={NavLink} to='/reset' style={({ isActive }) => { return { backgroundColor: isActive ? '#6d1b7b' : '' } }} sx={{ color: 'white', textTransform: 'none' }}>Change Password</Button>
           <Button component={NavLink} to='/password' style={({ isActive }) => { return { backgroundColor: isActive ? '#6d1b7b' : '' } }} sx={{ color: 'white', textTransform: 'none' }}>Reset Password</Button>
 

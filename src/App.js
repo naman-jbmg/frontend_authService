@@ -14,6 +14,7 @@ import { useEffect,useState } from 'react';
 import axios from 'axios';
 import RolePerm from './components/pages/RolePerm/RolePerm';
 import { color } from '@mui/system';
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -36,8 +37,8 @@ useEffect(()=>{
 },[]);
   return (
     <div className="App">
-      
-      <BrowserRouter>
+       <ToastContainer limit={1}/>
+      {/* <BrowserRouter> */}
       
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -49,11 +50,11 @@ useEffect(()=>{
             <Route path="reset" element={<ResetPassword />} />
           </Route>
          
-          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="dashboard" element={<Dashboard/>} />
           {/* <Route path="/dashboard" element={jwtToken= "123" ? <Dashboard /> : <change/>} /> */}
           < Route path="*" element={<h1>Error 404 Page not found !!</h1>} />
         </Routes>
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
       {/* sendpasswordresetemail */}
       
     </div>
