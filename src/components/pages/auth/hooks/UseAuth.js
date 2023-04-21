@@ -6,6 +6,8 @@ import axios from 'axios';
 export default function UseAuth() {
 
 const [usersAll,setUsers]=useState([]);
+const [AllPermission,setAllpermission]=useState([])
+const [AllRole,setRole]=useState([])
 const token = localStorage.getItem("jwtToken");
 
   useEffect(()=>{
@@ -18,8 +20,20 @@ const token = localStorage.getItem("jwtToken");
      
      setUsers(response.data);
    };
+    const fetchRole= async () => {
+     const response = await axios.get("http://localhost:4000/accounts/auth/all-role",{
+       headers: {
+         Authorization: `Bearer ${token}`,
+       },
+     });
+     
+     setRole(response.data);
+   };
+
+  
   fetchUsers();
+  fetchRole();
  },[]);
   
- return [usersAll];
+ return [usersAll,AllRole];
 };

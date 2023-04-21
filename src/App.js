@@ -37,7 +37,7 @@ useEffect(()=>{
 },[]);
   return (
     <div className="App">
-       <ToastContainer limit={1}/>
+      
       {/* <BrowserRouter> */}
       
         <Routes>

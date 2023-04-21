@@ -1,33 +1,49 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Button, Modal } from "react-bootstrap";
 import "./Usertable.css";
+import { TextField } from "@mui/material";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 import axios from "axios";
 import AddCircleTwoToneIcon from "@mui/icons-material/AddCircleTwoTone";
 import UseAuth from "../pages/auth/hooks/UseAuth";
 import ReactPaginate from 'react-paginate';
-
+import { userAuthHost } from "../Utils";
 
 export default function UserTable2() {
+  const animatedComponents = makeAnimated();
   const [currentPage, setCurrentPage] = useState(0);
-
+  const [permission, setPermission] = useState([]);
   const [show, setShow] = useState(false);
   const [users, setUsers] = useState([]);
+  const [AllUserPermission, setAllUserPermission] = useState([]);
+  const [selectedOption, setSelectedOptions] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [usersAll] = UseAuth();
+  
+  const [usersAll, AllRole] = UseAuth();
   const token = localStorage.getItem("jwtToken");
   const pageSize = 5; // set the number of users to display per page
   const offset = currentPage * pageSize;
   const displayedUsers = users.slice(offset, offset + pageSize);
 
+  const colourOptions = permission.map((option) => ({ value: option.permissionName, label: option.permissionName }));
+
+  console.log(colourOptions)
+
+
+  console.log("All", AllUserPermission);
   const handlePageClick = (data) => {
-    setCurrentPage(data.selected);
+    setCurrentPage(data.selected[0]);
   };
   const handleClose = () => {
     setShow(false);
@@ -38,7 +54,7 @@ export default function UserTable2() {
     setRole("");
 
   };
-  const handleShow = (users) => {
+  const handleShow = (users, selected) => {
     setShow(true);
     setSelectedUser(users);
     setFirstName(users ? users.firstName : "");
@@ -47,6 +63,10 @@ export default function UserTable2() {
     setRole(users ? users.role : "");
 
   };
+  const handleSelectChange = (selected) => {
+    setSelectedOptions(selected);
+  };
+
   const handleAddUser = () => {
     axios
       .post("http://localhost:4000/accounts/register", { firstName, lastName, email })
@@ -58,12 +78,15 @@ export default function UserTable2() {
   };
 
   const handleUpdateUser = () => {
+    const selectedValues = selectedOption.map((option) => option.value);
+
     axios
       .put(`http://localhost:4000/accounts/${selectedUser.id}`, {
         firstName,
         lastName,
         email,
         role,
+        selectedOptions: selectedValues,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -90,15 +113,13 @@ export default function UserTable2() {
       })
       .then(() => {
         const newUsers = users.filter((u) => u.id !== selectedUser.id);
-        
-        
         setUsers(newUsers);
         handleClose();
       })
       .catch((error) => console.log(error));
   };
 
-  
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -123,11 +144,34 @@ export default function UserTable2() {
         } else {
           toast.error("Login Failed");
         }
-        
+
       }
     };
+
+    const fetchpermission = async () => {
+      const response = await axios.get(`${userAuthHost}/auth/all-permission`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setPermission(response.data);
+    };
+    const fetchAllUserPermission = async () => {
+      const response = await axios.get(`${userAuthHost}/getUserPermission/assign`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setAllUserPermission(response.data);
+    };
+    fetchAllUserPermission();
+    fetchpermission();
+
     fetchUsers();
   }, []);
+
+  let permissionArr
 
 
   return (
@@ -141,7 +185,7 @@ export default function UserTable2() {
                   <input
                     className="form-control mr-sm-2"
                     type="search"
-                    placeholder="Search Student"
+                    placeholder="Search "
                     aria-label="Search"
                   />
                 </form>
@@ -178,39 +222,87 @@ export default function UserTable2() {
                   </tr>
                 </thead>
                 <tbody>
-                  {displayedUsers.map((users, index) => (
-                    <tr>
-                      <th scope="row">{index + 1}</th>
-                      <td>{`${users.firstName} ${users.lastName}`}</td>
-                      <td>{users.email}</td>
-                      <td>{users.id}</td>
-                      <td>{users.role}</td>
-                      <td>{users.permission}</td>
+                  {displayedUsers.map((users, index,) => {
 
-                      <td>
-                        <a
-                          className="view"
-                          title="View"
-                          data-toggle="tooltip"
-                          style={{ color: "#10ab80" }}
-                        >
-                          <i className="material-icons">&#xE417;</i>
-                        </a>
-                        <a className="edit" title="Edit" data-toggle="tooltip" onClick={() => handleShow(users)}>
-                          <i className="material-icons">&#xE254;</i>
-                        </a>
-                        <a
-                          className="delete"
-                          title="Delete"
-                          data-toggle="tooltip"
-                          style={{ color: "red" }}
-                          onClick={()=>handleShow(users)}
-                        >
-                          <i className="material-icons">&#xE872;</i>
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
+
+
+                    let selected = []
+
+
+                    AllUserPermission.map((post) => {
+
+                      if (post.userId == users.id) {
+                        console.log(post)
+                        console.log(post.permissions)
+                        permissionArr = post.permissions
+
+
+                        // if(post.permissions[0]=="Create"){
+                        //   selected.push(colourOptions[0])
+                        //   console.log(selected);
+                        // }
+                        //   return(
+                        // post.permissions.map((sel)=>{
+                        //   if(sel=="update"){
+                        //     selected.push(colourOptions[0])
+                        //     console.log(selected);
+                        //   }
+                        //  })
+                        // )
+
+
+                      }
+
+
+
+
+                    })
+
+
+
+
+
+                    return (
+
+
+
+
+
+                      <tr>
+                        <th scope="row">{index + 1}</th>
+                        <td>{`${users.firstName} ${users.lastName}`}</td>
+                        <td>{users.email}</td>
+                        <td>{users.id}</td>
+                        <td>{users.role}</td>
+                        <td>{permissionArr + ""}</td>
+
+
+                        <td>
+                          <a
+                            className="view"
+                            title="View"
+                            data-toggle="tooltip"
+                            style={{ color: "#10ab80" }}
+                          >
+                            <i className="material-icons">&#xE417;</i>
+                          </a>
+                          <a className="edit" title="Edit" data-toggle="tooltip" onClick={() => handleShow(users)}>
+                            <i className="material-icons">&#xE254;</i>
+                          </a>
+                          <a
+                            className="delete"
+                            title="Delete"
+                            data-toggle="tooltip"
+                            style={{ color: "red" }}
+                            onClick={() => handleShow(selected, users)}
+                          >
+                            <i className="material-icons">&#xE872;</i>
+                          </a>
+                        </td>
+                      </tr>
+
+                    )
+                  })}
                 </tbody>
               </table>
               <ReactPaginate
@@ -227,7 +319,7 @@ export default function UserTable2() {
             </div>
           </div>
 
-          {/* <!--- Model Box ---> */}
+          {/* <!--- Model Box  ---> */}
           <div className="modal_box">
             <Modal
               show={show}
@@ -241,6 +333,23 @@ export default function UserTable2() {
               <Modal.Body>
                 <form className="modal-form">
                   <div className="form-group" style={{ display: "flex" }}>
+                  <TextField
+            sx={{
+              "& .MuiInputBase-root": {
+                height: 40,
+              },
+              boxShadow: 2,
+            }}
+            margin="normal"
+            required
+            fullWidth
+            id="user_id"
+            name="UserID"
+            // onChange={handleInputChange}
+            // value={actualData.password}
+            label="UserID"
+            type="text"
+          />
                     <div className="form-group-0">
                       <select class="form-select" aria-label="Default select example" style={{ marginTop: "10px", padding: 10, paddingRight: 35 }}>
                         <option selected>Title</option>
@@ -279,18 +388,21 @@ export default function UserTable2() {
                         className="form-control"
                         id="form-role"
                         placeholder="Enter Role"
+
                       />
-                    </div>
+
+                      <DropdownButton id="dropdown-options" title="Select an option" onChange={(eventKey)=>setRole(eventKey)}>
+                        {AllRole.map((option) => (
+                          <Dropdown.Item key={option.roleName} eventKey={option.roleName}>
+                             {option.roleName}
+                          </Dropdown.Item>
+                        ))}
+                      </DropdownButton>
 
 
-                    <div className="form-group-2 ">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="form-permission"
-                        placeholder="Enter Permission"
-                      />
+
                     </div>
+
                   </div>
                   <div className="form-group2" style={{ display: "flex" }}>
                     <div className="form-group-1">
@@ -301,6 +413,14 @@ export default function UserTable2() {
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                         placeholder="Enter Email"
+                      />
+                      <Select
+                        closeMenuOnSelect={false}
+                        components={animatedComponents}
+                        // defaultValue={}
+                        isMulti
+                        onChange={handleSelectChange}
+                        options={colourOptions}
                       />
                     </div>
                   </div>

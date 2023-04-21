@@ -36,6 +36,7 @@ const Registration = () => {
   };
 
   const handleSubmit = async (event) => {
+    
     try {
       console.log("ppp");
       event.preventDefault();

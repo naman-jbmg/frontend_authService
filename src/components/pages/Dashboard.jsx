@@ -35,10 +35,8 @@ const Dashboard = () => {
    
     
       <Layout />
-      
-      
       {/* <SideMenu /> */}
-     <UserTable2/>
+      <UserTable2/>
       
   {/* {userRole==='Admin' ? <SideMenu/> :<UserTable2/> } */}
 {/* <Route path="/dashboard" element={jwtToken= "123" ? <Dashboard /> : <change/>} /> */}
